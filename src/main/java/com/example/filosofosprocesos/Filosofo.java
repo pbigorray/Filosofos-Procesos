@@ -33,39 +33,39 @@ public class Filosofo extends Task<Color> {
     @Override
     protected Color call() throws Exception {
         while (comida>0){
-            setWhite();
-            if(tenedor1.coger()){
-                setOrange();
-                tenedor1.setOrange();
-                Thread.sleep(200);
-                System.out.println("Tenedor"+tenedor1.getId()+" cogido por "+id);
+            Thread.sleep(3000);
+            synchronized (tenedor1){
+                synchronized (tenedor2){
+                    if(tenedor1.coger()){
+                        setOrange();
+                        tenedor1.setOrange();
+                        Thread.sleep(200);
+                        System.out.println("Tenedor"+tenedor1.getId()+" cogido por "+id);
+                        if (tenedor2.coger()){
+                            setGreen();
+                            tenedor1.setGreen();
+                            tenedor2.setGreen();
+                            System.out.println("Tenedor"+tenedor2.getId()+" cogido por"+id);
+                            comida--;
+                            Thread.sleep(200);
+                            tenedor1.soltar();
+                            tenedor2.soltar();
+                            tenedor1.setWhite();
+                            tenedor2.setWhite();
+                            setRed();
 
-                if (tenedor2.coger()){
-                    setGreen();
-                    tenedor1.setGreen();
-                    tenedor2.setGreen();
-                    System.out.println("Tenedor"+tenedor2.getId()+" cogido por"+id);
-                    comida--;
-                    Thread.sleep(200);
-                    try {
+                        }else {
+                            setWhite();
+                            tenedor1.soltar();
+                        }
+                    }else {
+                        setWhite();
                         tenedor1.soltar();
-                        tenedor2.soltar();
-                        tenedor1.setWhite();
-                        tenedor2.setWhite();
-                        setRed();
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
-                }else {
-                    setWhite();
-                    tenedor1.soltar();
                 }
-            }else {
-                setWhite();
-                tenedor1.soltar();
+
+                }
             }
-        }
         return  null;
     }
     public synchronized void setRed(){

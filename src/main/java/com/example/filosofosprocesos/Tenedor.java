@@ -26,7 +26,6 @@ public class Tenedor extends Task<Color> {
                 tenedor.setBackground(new Background(new BackgroundFill(t1, new CornerRadii(0), new Insets(0))));
             }
         });
-        setRed();
     }
 
     public  boolean coger(){
